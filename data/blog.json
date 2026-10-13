@@ -1,0 +1,11 @@
+[
+    {
+        "id": 1790615491213,
+        "title": "Announcing Black Madhav PHP Edition",
+        "excerpt": "We have successfully converted our complete digital agency platform to PHP.",
+        "content": "### Complete PHP Modern Architecture\n\nOur team has converted every module, component, database layer, validation, and route to **native PHP**.\n\n* High performance\n* Zero dependencies runtime\n* SQLite and JSON persistence",
+        "image": null,
+        "createdAt": "2026-09-28T17:11:31+00:00",
+        "updatedAt": null
+    }
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1791631624854,
+        "name": "demo",
+        "businessName": "demo",
+        "phone": "9876532111",
+        "email": "demodemo@gmail.com",
+        "service": "App Development",
+        "projectDetails": "ti wnt to create a  mobile app for it company office",
+        "submittedAt": "2026-10-10T13:27:04+02:00"
+    },
+    {
+        "id": 1791466982550,
+        "name": "demo",
+        "businessName": "",
+        "phone": "9876543211",
+        "email": "demo123@gmail.com",
+        "service": "Web Development",
+        "projectDetails": "dkjshs",
+        "submittedAt": "2026-10-08T15:43:02+02:00"
+    },
+    {
+        "id": 1791457665371,
+        "name": "name",
+        "businessName": "",
+        "phone": "9876543211",
+        "email": "name@gmail.com",
+        "service": "Web Development",
+        "projectDetails": "kjasbhfsdaj",
+        "submittedAt": "2026-10-08T13:07:45+02:00"
+    }
+]

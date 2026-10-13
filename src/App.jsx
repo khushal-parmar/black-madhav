@@ -1,0 +1,71 @@
+import Home from "./Home";
+import Services from "./services";
+import Portfolio from "./Portfolio";
+import Testimonials from "./Testimonials";
+import Contact from "./Contact";
+import Blog from "./Blog";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import About from "./About";
+import Careers from "./Careers";
+import LoadingScreen from "./components/LoadingScreen";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
+
+  return null;
+}
+
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setIsFadingOut(true);
+      window.setTimeout(() => setIsLoading(false), 700);
+    }, 2200);
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.clearTimeout(timer);
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      document.body.style.overflow = "";
+    }
+  }, [isLoading]);
+
+  return (
+    <BrowserRouter>
+      <ScrollToTop />
+      <LoadingScreen isVisible={isLoading} isFadingOut={isFadingOut} />
+      <div className={isLoading ? "pointer-events-none select-none" : ""}>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/testimonials" element={<Testimonials />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/careers" element={<Careers />} />
+        </Routes>
+        <Footer />
+      </div>
+    </BrowserRouter>
+  );
+}
+
+export default App;
