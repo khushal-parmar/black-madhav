@@ -6,14 +6,14 @@
  * Styles live at the bottom of this file, so no other file needs to change.
  * (The mobile menu toggle is still handled by assets/js/main.js - same ids as before.)
  */
-function renderNavbar($activePath = '/') {
+function renderNavbar($activePath = '/') { 
     // 'key' = route used to detect the active page, 'path' = the link
     // ('Inquiry' opens the existing /contact page, so the backend/form is untouched)
     $navLinks = [
         ['name' => 'Home',     'keys' => ['/'],                     'path' => base_url('/')],
+        ['name' => 'About',    'keys' => ['/about'],                'path' => base_url('/about')],
         ['name' => 'Our Work', 'keys' => ['/works'],                'path' => base_url('/works')],
         ['name' => 'Inquiry',  'keys' => ['/contact', '/inquiry'],  'path' => base_url('/contact')],
-        ['name' => 'About',    'keys' => ['/about'],                'path' => base_url('/about')],
     ];
 
     $current = '/' . trim((string)$activePath, '/');
