@@ -76,7 +76,7 @@ $experts = [
     [
         'name' => "Drashti Sanchaniya",
         'image' => 'drashti.jpg',
-        'role' => "UI/UX & Graphic Designer",
+        'role' => "UI/UX Designer & Graphic Designer",
         'bio'  => "Creates beautiful, user-focused interfaces and brand visuals that improve usability, drive engagement, and deliver a polished customer experience.",
     ],
     [
@@ -88,7 +88,7 @@ $experts = [
     [
         'name' => "Vandit Katbamna",
         'image' => 'vandit.jpg',
-        'role' => "Full Stack Software Engineer ",
+        'role' => "Full Stack Developer",
         'bio'  => "Builds reliable, high-performance web applications from front-end design to back-end systems, making sure every solution is fast, scalable, and secure.",
     ],
 ];
@@ -115,7 +115,7 @@ $extraSections = [
 ];
 ?>
 
-<div id="about-page" class="min-h-screen overflow-x-hidden bg-white text-slate-800 pt-24" data-testid="page-about">
+<div id="about-page" class="min-h-screen overflow-x-hidden bg-white text-slate-800" data-testid="page-about">
 
   <!-- Hero Section -->
   <section class="ab-hero relative overflow-hidden py-20 md:py-28">
@@ -508,8 +508,11 @@ $extraSections = [
   #about-page .ab-member { padding: 1.6rem 1.2rem; }
   #about-page .ab-grid { gap: 1rem; }
 }
+/* hero starts at the very top (behind the navbar): no white gap. Top padding = navbar height + normal spacing */
+#about-page section.ab-hero { padding-top: 12.15rem; }
+@media (max-width: 767px) { #about-page section.ab-hero { padding-top: 7.3rem; } }
 @media (prefers-reduced-motion: reduce) {
-  #about-page *, #about-page *::before, #about-page *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  #about-page *,#about-page *::before, #about-page *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .js-anim #about-page .anim:not(.in-view) { opacity: 1; }
 }
 </style>

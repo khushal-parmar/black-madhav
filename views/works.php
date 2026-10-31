@@ -18,8 +18,11 @@ $workImage = 'https://mdidminfoway.com/storage/works/category/ba42aad7-eb62-4fb0
 /* Hero background image (local file) */
 $heroImage = base_url('assets/images/our-work-bg.jpg');
 
-/* Which side the hero text box sits on: 'left' or 'right' */
+/* Which side the hero text sits on: 'left' or 'right' */
 $heroSide = 'left';
+
+/* Show the extra line "Explore our websites, apps, branding..." under the heading? (true / false) */
+$showHeroText = false;
 
 /*
  * Work categories  (title, card image, "View Work" link)
@@ -36,32 +39,35 @@ $works = [
 ];
 ?>
 
-<div class="min-h-screen bg-white pt-28 pb-16">
+<div class="min-h-screen bg-white pb-16">
 
-    <!-- Hero Section : clear photo, text sits directly on the image, a little to one side -->
+    <!-- Hero Section : photo, text at the top-left with a soft dark shadow behind it -->
     <section
         class="ow-hero ow-hero--<?= e($heroSide) ?> relative isolate overflow-hidden bg-blue-950"
         style="background-image: url('<?= e($heroImage) ?>');"
     >
+        <!-- dark shadow behind the text (strong on the text side, fades to clear) -->
+        <div class="ow-hero__shade" aria-hidden="true"></div>
+
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="ow-hero__card">
-
-                <p class="ow-hero__eyebrow">
-                    Innovation Through Design &amp; Code
-                </p>
 
                 <h1 class="ow-hero__title">
                     Our Work
                 </h1>
 
-                <span class="ow-hero__line"></span>
-
-                <p class="ow-hero__text">
-                    Explore our websites, apps, branding<br class="ow-br">
-                    and design projects created<br class="ow-br">
-                    for growing businesses.
+                <p class="ow-hero__sub">
+                    Innovation Through Design &amp; Code
                 </p>
+
+                <?php if ($showHeroText): ?>
+                    <p class="ow-hero__text">
+                        Explore our websites, apps, branding<br class="ow-br">
+                        and design projects created<br class="ow-br">
+                        for growing businesses.
+                    </p>
+                <?php endif; ?>
 
             </div>
 
@@ -160,41 +166,41 @@ $works = [
 </div>
 
 <style>
-/* ---- Hero: clear photo, text directly on it (no box), shifted a little to one side ---- */
+/* ---- Hero: text at the TOP-LEFT with a soft dark shadow behind it ---- */
 .ow-hero {
-  display: flex; align-items: flex-end;                /* text sits at the bottom; use "center" to bring it back to the middle */
-  min-height: 26rem; padding: 3.5rem 0 2.5rem;
+  position: relative; display: flex; align-items: flex-start;       /* top of the image */
+  min-height: 33rem; padding: 13rem 0 2.5rem;                         /* image now starts at the very top; top gap: bigger number = text goes lower */
   background-size: cover; background-position: center; background-attachment: scroll;
 }
 .ow-hero > .container {
-  display: flex; max-width: none !important; margin: 0 !important; width: 100%;
-  padding-left: 1.25rem; padding-right: 1.25rem;       /* gap from the screen edge: make smaller to go more to the side */
+  position: relative; z-index: 1; display: flex; max-width: none !important; margin: 0 !important; width: 100%;
+  padding-left: 1.25rem; padding-right: 1.25rem;                      /* gap from the screen edge */
 }
 .ow-hero--left  > .container { justify-content: flex-start; }
 .ow-hero--right > .container { justify-content: flex-end; }
 
-.ow-hero__card {
-  width: 100%; max-width: 32rem; padding: 0;
-  text-align: left; background: none; border: 0; box-shadow: none;
-}
+/* back shadow: darkest behind the text, fading out towards the other side. Change .72 to make it lighter/darker */
+.ow-hero__shade { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.ow-hero--left  .ow-hero__shade { background: linear-gradient(90deg, rgba(8,18,45,.72) 0%, rgba(8,18,45,.45) 38%, rgba(8,18,45,0) 70%); }
+.ow-hero--right .ow-hero__shade { background: linear-gradient(270deg, rgba(8,18,45,.72) 0%, rgba(8,18,45,.45) 38%, rgba(8,18,45,0) 70%); }
 
-/* black text + soft white halo, so it stays readable on any part of the photo */
-.ow-hero__eyebrow, .ow-hero__title, .ow-hero__text {
-  color: #000;
-  text-shadow: 0 0 6px rgba(255,255,255,.95), 0 0 16px rgba(255,255,255,.85), 0 0 32px rgba(255,255,255,.7);
-}
-.ow-hero__eyebrow { margin-bottom: .9rem; font-size: .8rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
-.ow-hero__title   { margin-bottom: .9rem; font-size: 3.5rem; line-height: 1.05; font-weight: 800; letter-spacing: -.01em; }
-.ow-hero__line    { display: block; width: 4rem; height: .3rem; margin-bottom: 1.1rem; border-radius: 999px; background: #000; box-shadow: 0 0 10px rgba(255,255,255,.9); }
-.ow-hero__text    { font-size: 1.1rem; line-height: 1.7; font-weight: 600; }
+.ow-hero__card { width: 100%; max-width: 34rem; padding: 0; text-align: left; background: none; border: 0; box-shadow: none; }
+
+.ow-hero__title, .ow-hero__sub, .ow-hero__text { color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
+.ow-hero__title { margin-bottom: .5rem; font-size: 3.5rem; line-height: 1.05; font-weight: 800; letter-spacing: -.01em; }
+.ow-hero__sub   { margin-bottom: .9rem; font-size: 1.35rem; line-height: 1.4; font-weight: 600; color: #E8EEF8; }
+.ow-hero__text  { font-size: 1.1rem; line-height: 1.7; font-weight: 500; color: #E8EEF8; }
 .ow-br { display: inline; }
 
 @media (max-width: 767px) {
-  .ow-hero { min-height: 20rem; padding: 2.5rem 0 1.75rem; }
+  .ow-hero { min-height: 25rem; padding: 9rem 0 1.75rem; }
+  .ow-hero--left .ow-hero__shade, .ow-hero--right .ow-hero__shade {
+    background: linear-gradient(180deg, rgba(8,18,45,.72) 0%, rgba(8,18,45,.4) 55%, rgba(8,18,45,0) 100%);
+  }
   .ow-hero__card { max-width: none; }
   .ow-hero__title { font-size: 2.5rem; }
-  .ow-hero__eyebrow { font-size: .72rem; letter-spacing: .12em; }
+  .ow-hero__sub { font-size: 1.1rem; }
   .ow-hero__text { font-size: 1rem; }
-  .ow-br { display: none; }   /* on phones the text wraps naturally */
+  .ow-br { display: none; }
 }
 </style>

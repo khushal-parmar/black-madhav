@@ -1,4 +1,3 @@
-
 <?php
 require_once __DIR__ . '/../config/config.php';
 ?>
@@ -187,11 +186,18 @@ require_once __DIR__ . '/../config/config.php';
 
         <div class="digital-card-grid">
 
-            <!-- CARD 1: New card add karva mate aa div copy-paste karo -->
+            <!-- ====================================================================
+                 Dar-ek card nu image path alag che. Fakat src ma image nu naam badlo:
+                   src="/assets/images/works/Business%20Card%20Design/TAMARU-IMAGE-NAAM.jpg"
+                 (folder naam ma space hoy to %20 lakho. Bija folder ni image hoy to path pan badlo.)
+                 New card add karva mate niche no card div copy-paste karo.
+                 ==================================================================== -->
+
+            <!-- CARD 1 -->
             <div class="digital-card">
                 <div class="digital-card-image">
                     <img
-                        src="/assets/images/digital-card.jpg"
+                        src="/assets/images/works/Business_Card_Design/image-1.jpg"
                         alt="Digital Card"
                         loading="lazy"
                     >
@@ -207,7 +213,7 @@ require_once __DIR__ . '/../config/config.php';
             <div class="digital-card">
                 <div class="digital-card-image">
                     <img
-                        src="/assets/images/digital-card.jpg"
+                        src="/assets/images/works/Business_Card_Design/image-2.jpg"
                         alt="Business Card"
                         loading="lazy"
                     >
@@ -223,7 +229,7 @@ require_once __DIR__ . '/../config/config.php';
             <div class="digital-card">
                 <div class="digital-card-image">
                     <img
-                        src="/assets/images/digital-card.jpg"
+                        src="/assets/images/works/Business_Card_Design/image-3.jpg"
                         alt="Visiting Card"
                         loading="lazy"
                     >
@@ -239,7 +245,7 @@ require_once __DIR__ . '/../config/config.php';
             <div class="digital-card">
                 <div class="digital-card-image">
                     <img
-                        src="/assets/images/digital-card.jpg"
+                        src="/assets/images/works/Business_Card_Design/image-4.jpg"
                         alt="Creative Card"
                         loading="lazy"
                     >
@@ -256,7 +262,7 @@ require_once __DIR__ . '/../config/config.php';
             <div class="digital-card">
                 <div class="digital-card-image">
                     <img
-                        src="/assets/images/digital-card.jpg"
+                        src="/assets/images/works/Business_Card_Design/image-5.jpg"
                         alt="New Card"
                         loading="lazy"
                     >

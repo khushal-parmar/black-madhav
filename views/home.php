@@ -3,13 +3,13 @@
  * View: Home Page
  * Light Navy Blue + White theme. Styles + animations are included at the bottom of this file (self-contained).
  */
-
+//   
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../components/HeroSection.php';
 require_once __DIR__ . '/../components/OfficeLocations.php';
 
 if (!function_exists('bm_icon')) {
-    /** Duotone line icon set (48x48). Usage: <?= bm_icon('web') ?> */
+    /** Duotone line icon set (48x48). Usage: <?= bm_icon('web') ?>  */
     function bm_icon(string $name): string {
         static $icons = [
             'web' => '<path class="d" d="M6 13a4 4 0 014-4h28a4 4 0 014 4v6H6z"/><rect x="6" y="9" width="36" height="30" rx="4"/><path d="M6 19h36M20 27l-4 4 4 4M28 27l4 4-4 4"/><circle cx="11.5" cy="14" r=".8"/><circle cx="16" cy="14" r=".8"/>',
@@ -42,44 +42,66 @@ if (!function_exists('bm_icon')) {
     }
 }
 
+/*
+ * Services: card pictures are loaded from  assets/images/services/<file>
+ * (recommended size 800x500, .jpg). If a picture is missing, a navy gradient with the icon is shown.
+ * Set $showServiceText = false to show only the picture + title (no details at all).
+ */
+$showServiceText = true;
 $services = [
     [
         'icon' => 'web',
+        'image' => 'web-development.jpg',
+        'short' => "Fast, responsive websites that turn visitors into customers.",
         'title' => "Web Development",
         'description' => "Professional, fast, and responsive websites designed to convert visitors into customers.",
     ],
     [
         'icon' => 'app',
+        'image' => 'app-development.jpg',
+        'short' => "Smooth Android and cross-platform mobile apps.",
         'title' => "App Development",
         'description' => "Modern mobile applications for Android and cross-platform that deliver smooth performance and user experience.",
     ],
     [
         'icon' => 'marketing',
+        'image' => 'digital-marketing.jpg',
+        'short' => "Grow brand awareness, traffic and leads.",
         'title' => "Digital Marketing",
         'description' => "Result-driven marketing strategies to increase brand awareness, traffic, and leads.",
     ],
     [
         'icon' => 'seo',
+        'image' => 'seo.jpg',
+        'short' => "Rank higher on Google and reach more customers.",
         'title' => "SEO",
         'description' => "Improve your Google ranking and reach more customers organically.",
     ],
     [
         'icon' => 'ai',
+        'image' => 'ai-solutions.jpg',
+        'short' => "Smart automation to boost efficiency and growth.",
         'title' => "AI Solutions",
         'description' => "Smart automation and AI-powered systems to improve efficiency and business growth.",
     ],
     [
         'icon' => 'design',
+        'image' => 'graphic-design.jpg',
+        'short' => "Creative designs that strengthen your brand.",
         'title' => "Graphic Design",
         'description' => "Creative designs that strengthen your brand identity and visual communication.",
     ],
     [
         'icon' => 'uiux',
+        'image' => 'ui-ux-design.jpg',
+        'short' => "User-friendly interfaces that convert.",
         'title' => "UI/UX Design",
         'description' => "User-focused designs that improve usability, engagement, and conversion rates.",
     ],
     [
         'icon' => 'branding',
+        'image' => 'branding.jpg',
+        'short' => "A memorable brand identity that stands out.",
         'title' => "Branding",
         'description' => "Build a strong and memorable brand identity that stands out in the market.",
     ],
@@ -145,13 +167,13 @@ $testimonials = [
     [
         'category' => "Web Development",
         'rating' => 5,
-        'quote' => "Vandit completely transformed our internal operations. The custom CRM he built is flawless and that makes our work flow easir.",
+        'quote' => "Vandit has completely transformed the way we manage our internal operations. From understanding our requirements to developing a fully customized CRM tailored to our business needs, he has done an outstanding job",
         'author' => "Nikhil Patel, Patel Fashion Hub",
     ],
     [
         'category' => "App Development",
         'rating' => 5,
-        'quote' => "The Transport Management System handled everything we threw at it. Highly scalable and clean code.",
+        'quote' => "The CRM works flawlessly, is easy to use, and has significantly improved our overall workflow and team productivity. It has streamlined our daily processes, reduced manual effort, and made managing operations much more efficient.",
         'author' => "Neha Sharma, Urban Trendz",
     ],
     [
@@ -160,12 +182,7 @@ $testimonials = [
         'quote' => "Krushna Kunj Bungalows We had a good experience working with Black Madhav Digital Solution. Their creative designs and professional approach helped us present our bungalow project beautifully. The team is supportive and understands our requirements well.",
         'author' => "Ashvin Ahir, Krushna Kunj Bungalows",
     ],
-     [
-        'category' => "SEO Services",
-        'rating' => 5,
-        'quote' => "Krishna Developers Black Madhav Digital Solution provides good creative work and digital marketing support. Their team understands our business needs, communicates well and is always helpful. Happy to work with them!",
-        'author' => "Krishna Developers",
-    ],
+     
      [
         'category' => "AI Solutions",
         'rating' => 5,
@@ -173,22 +190,17 @@ $testimonials = [
         'author' => "Rajesh Chhetaliya",
     ],
      [
-        'category' => "Graphic Design",
+        'category' => "UI/UX & Graphic Design",
         'rating' => 5,
         'quote' => "Kenko Helthcare Service Good experience with Black Madhav Digital Solution. Their team understands our requirements and provides professional designs and creative support for our business. They are helpful, responsive and easy to work",
         'author' => "Nimish Ahir",
     ],
-     [
-        'category' => "UI/UX Design",
-        'rating' => 5,
-        'quote' => "Our platform needed a better user experience to improve engagement. Their design approach was user-focused and modern. User experience improved significantly after redesign. Clean and modern design.",
-        'author' => "Manish Gupta",
-    ],
+    
     [
         'category' => "Branding",
         'rating' => 5,
-        'quote' => "Our brand identity was inconsistent before working with them. They created a strong and professional brand presence. Our brand identity now looks professional and consistent across all platforms.",
-        'author' => "Sneha Desai",
+        'quote' => "Krishna Developers Black Madhav Digital Solution provides good creative work and digital marketing support. Their team understands our business needs, communicates well and is always helpful. Happy to work with them!",
+        'author' => "Krishna Developers",
     ],
 ];
 
@@ -229,7 +241,7 @@ $industries = [
 ];
 ?>
 
-<div id="top" class="flex min-h-screen flex-col overflow-x-hidden pt-24 bg-white text-slate-800" data-testid="page-home">
+<div id="top" class="flex min-h-screen flex-col overflow-x-hidden bg-white text-slate-800" data-testid="page-home">
 
   <!-- Hero Section -->
   <?php renderHeroSection(); ?>
@@ -294,17 +306,24 @@ $industries = [
         
       </div>
 
-      <div class="svc-grid">
+      <div class="sv-grid">
         <?php foreach ($services as $i => $service): ?>
-          <article class="svc-card">
-            <div class="svc-card__top">
-              <span class="svc-card__icon"><?= bm_icon($service['icon']) ?></span>
-              <h3 class="svc-card__title"><?= e($service['title']) ?></h3>
+          <article class="sv-card">
+            <div class="sv-card__media">
+              <span class="sv-card__fallback"><?= bm_icon($service['icon']) ?></span>
+              <img
+                src="<?= e(base_url('assets/images/services/' . $service['image'])) ?>"
+                alt="<?= e($service['title']) ?>"
+                loading="lazy"
+                onerror="this.style.display='none'" />
+              <span class="sv-card__icon"><?= bm_icon($service['icon']) ?></span>
             </div>
-            <p class="svc-card__desc"><?= e($service['description']) ?></p>
-            <div class="svc-card__foot">
-              <span class="svc-card__num"><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?></span>
-              <a href="<?= base_url('/contact') ?>" class="svc-card__link">
+            <div class="sv-card__body">
+              <h3 class="sv-card__title"><?= e($service['title']) ?></h3>
+              <?php if ($showServiceText): ?>
+                <p class="sv-card__desc"><?= e($service['short']) ?></p>
+              <?php endif; ?>
+              <a href="<?= base_url('/contact') ?>" class="sv-card__link">
                 Get a Quote
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
               </a>
@@ -861,6 +880,11 @@ $industries = [
   --color-slate-950: #14264A;
   --hero-offset: 0s;
 }
+/* ---- space under the fixed navbar: exactly the navbar height, so no white strip between navbar and hero ----
+   (navbar is ~82.6px on desktop and ~65px on phones; if you change the navbar padding/logo size, change these two numbers) */
+#top { padding-top: 5.15rem; }
+@media (max-width: 767px) { #top { padding-top: 4.05rem; } }
+
 /* ---- reusable animation classes: .anim + .anim-up/-left/-right/-zoom/-fade ---- */
 #top .anim.in-view { animation: bmUp .85s var(--ease-out) backwards; animation-delay: var(--d, 0s); }
 #top .anim-left.in-view  { animation-name: bmLeft; }
@@ -956,6 +980,44 @@ $industries = [
 #top .form-feedback { display: flex; gap: .65rem; align-items: flex-start; animation: bmUp .45s var(--ease-out) both; }
 #top .form-feedback.hidden { display: none; }
 #top .form-feedback[data-state="error"] { background: #fff; border-color: var(--navy-700); border-left-width: 4px; }
+
+/* ==========================================================================
+   SERVICE CARDS  (.sv-*)  - picture on top, name + one short line below
+   ========================================================================== */
+#top .sv-grid { display: grid; gap: 1.5rem; grid-template-columns: minmax(0,1fr); }
+@media (min-width: 640px)  { #top .sv-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (min-width: 1024px) { #top .sv-grid { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+
+#top .sv-card {
+  display: flex; flex-direction: column; overflow: hidden;
+  background: #fff; border: 1px solid var(--navy-100); border-radius: 1.25rem; box-shadow: var(--shadow-soft);
+  transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out), border-color .3s ease;
+}
+#top .sv-card:hover { transform: translateY(-8px); border-color: var(--navy-300); box-shadow: var(--shadow-lift); }
+
+#top .sv-card__media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: linear-gradient(135deg, var(--navy-700), var(--navy-950)); }
+#top .sv-card__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .9s var(--ease-out); }
+#top .sv-card__media::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(20,38,74,.5) 0%, rgba(20,38,74,0) 55%); }
+#top .sv-card:hover .sv-card__media img { transform: scale(1.08); }
+#top .sv-card__fallback { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.55); }
+#top .sv-card__fallback .bm-ico { width: 4rem; height: 4rem; }
+#top .sv-card__icon {
+  position: absolute; z-index: 2; left: .9rem; bottom: .9rem; display: grid; place-items: center;
+  width: 2.8rem; height: 2.8rem; border-radius: .85rem; color: var(--navy-700);
+  background: rgba(255,255,255,.95); box-shadow: 0 8px 18px -8px rgba(20,38,74,.6);
+  transition: background .35s, color .35s, transform .45s var(--ease-out);
+}
+#top .sv-card__icon .bm-ico { width: 1.5rem; height: 1.5rem; }
+#top .sv-card:hover .sv-card__icon { background: var(--navy-700); color: #fff; transform: translateY(-3px) rotate(-4deg); }
+
+#top .sv-card__body { display: flex; flex-direction: column; flex: 1 1 auto; padding: 1.2rem 1.3rem 1.3rem; }
+#top .sv-card__title { font-size: 1.15rem; font-weight: 700; color: var(--navy-950); transition: color .3s; }
+#top .sv-card:hover .sv-card__title { color: var(--navy-600); }
+#top .sv-card__desc { margin-top: .45rem; font-size: .9rem; line-height: 1.55; color: var(--navy-600); }
+#top .sv-card__link { display: inline-flex; align-items: center; gap: .4rem; align-self: flex-start; margin-top: auto; padding-top: 1rem; font-size: .85rem; font-weight: 600; color: var(--navy-700); }
+#top .sv-card__link svg { width: 1rem; height: 1rem; transition: transform .35s var(--ease-out); }
+#top .sv-card__link:hover { color: var(--navy-950); }
+#top .sv-card__link:hover svg { transform: translateX(4px); }
 
 /* ==========================================================================
    SERVICES CARDS  (.svc-*)  - icon + name on top, description below
@@ -1157,13 +1219,13 @@ $industries = [
 #top .contact-line:hover .contact-line__icon { background: var(--navy-700); color: #fff; transform: scale(1.1); }
 
 @media (max-width: 767px) {
-  #top .branch-card:hover, #top .svc-card:hover, #top .ind-card:hover { transform: none; }
+  #top .branch-card:hover, #top .svc-card:hover, #top .sv-card:hover, #top .ind-card:hover { transform: none; }
   #top .branch-card__foot { flex-direction: column; align-items: stretch; }
   #top .branch-card .bm-btn { width: 100%; }
   #top input, #top select, #top textarea { font-size: 16px !important; }
   #top .anim-left.in-view, #top .anim-right.in-view { animation-name: bmUp; }
 }
-@media (hover: none) { #top .group:hover img, #top .ind-card:hover img { transform: none; } }
+@media (hover: none) { #top .group:hover img, #top .ind-card:hover img, #top .sv-card:hover img { transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   #top *, #top *::before, #top *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   .js-anim #top .anim:not(.in-view) { opacity: 1; }
@@ -1191,11 +1253,12 @@ $industries = [
   #top #stats .stat-counter { font-size: 1.9rem; }
 
   /* industries: shorter pictures */
-  #top .ind-card__media { aspect-ratio: 16 / 9; }
+  #top .ind-card__media, #top .sv-card__media { aspect-ratio: 16 / 9; }
   #top .ind-card__body { padding: 1.1rem 1.2rem 1.25rem; }
 
   /* service cards a little tighter */
   #top .svc-card { padding: 1.25rem 1.25rem 1rem; }
+  #top .sv-card__body { padding: 1rem 1.15rem 1.15rem; }
 
   /* process circle: fits narrow phones */
   #top .orbit-wrap { gap: 2rem; }
@@ -1245,6 +1308,7 @@ $industries = [
     else { tag(kids, 'anim-up', 0.07); }
   });
   tag(list('.svc-card'), 'anim-up', 0.07);
+  tag(list('.sv-card'), 'anim-up', 0.07);
   tag(list('.ind-card'), 'anim-up', 0.07);
   tag(list('.branch-card'), 'anim-up', 0.12);
   tag(list('#stats .grid > *'), 'anim-zoom', 0.08);

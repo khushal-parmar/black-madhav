@@ -256,7 +256,7 @@ require_once __DIR__ . '/../config/config.php';
             <div class="digital-card">
                 <div class="digital-card-image">
                     <img
-                        src="/assets/images/digital-card.jpg"
+                        src="/assets/images/works/brochure/image-1.jpg"
                         alt="New Card"
                         loading="lazy"
                     >
