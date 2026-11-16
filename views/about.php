@@ -38,6 +38,10 @@ if (!function_exists('bm_icon')) {
     }
 }
 
+/* Hero background photo: put an image at  assets/images/about-bg.jpg  (about 1920x900, .jpg, under 300 KB).
+   If the file is missing, the normal light blue background is shown. */
+$heroImage = base_url('assets/images/about-bg.jpg');
+
 $approachSteps = [
     ['title' => "Understand", 'description' => "We understand your business and goals",   'icon' => 'eye'],
     ['title' => "Strategize", 'description' => "We create a clear strategy",             'icon' => 'clipboard'],
@@ -118,7 +122,8 @@ $extraSections = [
 <div id="about-page" class="min-h-screen overflow-x-hidden bg-white text-slate-800" data-testid="page-about">
 
   <!-- Hero Section -->
-  <section class="ab-hero relative overflow-hidden py-20 md:py-28">
+  <section class="ab-hero ab-hero--img relative overflow-hidden py-20 md:py-28" style="--ab-img: url('<?= e($heroImage) ?>');">
+    <div class="ab-hero__veil" aria-hidden="true"></div>
     <div class="ab-blob ab-blob--1"></div>
     <div class="ab-blob ab-blob--2"></div>
 
@@ -130,7 +135,7 @@ $extraSections = [
           We Build Digital Experiences That Drive Growth
         </h1>
         <p class="text-base leading-relaxed text-slate-600 sm:text-xl">
-          At BLACK MADHAV DIGITAL SOLUTION, we don't just create websites or run campaigns — we build powerful digital experiences that help businesses grow, scale, and stand out in today's competitive market. We combine technology, creativity, and strategy to deliver solutions that are not only visually impressive but also performance-driven.
+          At BLACK MADHAV DIGITAL SOLUTION, we don't just create websites or run campaigns — we build powerful digital experiences that help businesses grow, scale, and stand out in today's competitive market.
         </p>
 
         <!-- floating icon chips -->
@@ -508,6 +513,29 @@ $extraSections = [
   #about-page .ab-member { padding: 1.6rem 1.2rem; }
   #about-page .ab-grid { gap: 1rem; }
 }
+
+/* ---- hero background photo (dark navy look, white text) ----
+   --ab-veil = how dark the navy layer on the photo is (0 = photo only, 1 = solid navy).
+   Lower it (e.g. .35) to see more of the photo; raise it (e.g. .75) if the text is hard to read. */
+#about-page .ab-hero--img {
+  --ab-veil: .55;
+  --ab-pos: center top;      /* which part of the photo stays visible: 'center top' = top of the photo (heads), 'center center' = middle, 'center bottom' = bottom */
+  background-image: var(--ab-img), linear-gradient(180deg, var(--navy-800) 0%, var(--navy-900) 60%, var(--navy-950) 100%);
+  background-size: cover, cover; background-position: var(--ab-pos), center; background-repeat: no-repeat; background-attachment: scroll, scroll;
+}
+/* navy layer: keeps the photo visible at the top and fades into solid blue at the bottom (no white) */
+#about-page .ab-hero__veil {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(20,38,74,calc(var(--ab-veil) - .1)) 0%, rgba(20,38,74,var(--ab-veil)) 50%, rgba(20,38,74,.96) 100%);
+}
+#about-page .ab-hero--img > .container { z-index: 1; }
+/* text on the dark photo is white */
+#about-page .ab-hero--img .ab-gradient-text { background: none; -webkit-text-fill-color: #fff; color: #fff; text-shadow: 0 3px 18px rgba(0,0,0,.45); }
+#about-page .ab-hero--img .ab-hero__text > p { color: #E8EEF8; font-weight: 500; text-shadow: 0 2px 12px rgba(0,0,0,.45); }
+#about-page .ab-hero--img .ab-pill { color: #fff; background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.3); backdrop-filter: blur(6px); }
+#about-page .ab-hero--img .ab-pill__dot { background: #fff; }
+#about-page .ab-hero--img .ab-blob--1 { background: rgba(98,131,185,.35); }
+#about-page .ab-hero--img .ab-blob--2 { background: rgba(64,102,163,.4); }
 /* hero starts at the very top (behind the navbar): no white gap. Top padding = navbar height + normal spacing */
 #about-page section.ab-hero { padding-top: 12.15rem; }
 @media (max-width: 767px) { #about-page section.ab-hero { padding-top: 7.3rem; } }

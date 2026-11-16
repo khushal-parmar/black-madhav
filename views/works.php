@@ -6,14 +6,12 @@
  * Hero background photo: put an image at  assets/images/our-work-bg.jpg
  * (team meeting / office / IT company working). If the file is missing,
  * a plain blue background is shown instead.
+ *
+ * The 8 work cards now show VIDEOS (no images). Put the 8 .mp4 files in  assets/videos/works/
+ * (C:\xampp\htdocs\php\new\assets\videos\works\) with the exact names written in $works below.
  */
 
 require_once __DIR__ . '/../config/config.php';
-
-/*
- * Common temporary image URL
- */
-$workImage = 'https://mdidminfoway.com/storage/works/category/ba42aad7-eb62-4fb0-9f72-450f73fa080d.png';
 
 /* Hero background image (local file) */
 $heroImage = base_url('assets/images/our-work-bg.jpg');
@@ -24,18 +22,23 @@ $heroSide = 'left';
 /* Show the extra line "Explore our websites, apps, branding..." under the heading? (true / false) */
 $showHeroText = false;
 
+/* How the card videos play:  'auto' = play while the card is on screen (best for phones)
+                              'hover' = show the first frame, play only when you point at the card */
+$cardPlay = 'auto';
+
 /*
- * Work categories  (title, card image, "View Work" link)
+ * Work categories  (title, card VIDEO, "View Work" link)
+ * Video files live in  assets/videos/works/   (5-10 seconds, no sound needed, under 2 MB each is ideal)
  */
 $works = [
-    ['title' => 'Digital Card',            'image' => $workImage,                        'href' => '/digitalcard.php'],
-    ['title' => 'Business Card Design',    'image' => '/assets/images/digital-card.jpg', 'href' => '/businesscard.php'],
-    ['title' => 'Application Development', 'image' => $workImage,                        'href' => '/appdevelopment.php'],
-    ['title' => 'Latter Head',             'image' => '/assets/images/digital-card.jpg', 'href' => '/latterhead.php'],
-    ['title' => 'Website Development',     'image' => '/assets/images/digital-card.jpg', 'href' => '/Websitedev.php'],
-    ['title' => 'Brochure Design',         'image' => $workImage,                        'href' => '/brochure.php'],
-    ['title' => 'Social Media Post',       'image' => '/assets/images/digital-card.jpg', 'href' => '/socialmediapost.php'],
-    ['title' => 'Logo Design',             'image' => $workImage,                        'href' => '/logo.php'],
+    ['title' => 'Digital Card',            'video' => 'assets/videos/works/digital-card.mp4',        'href' => '/digitalcard.php'],
+    ['title' => 'Business Card Design',    'video' => 'assets/videos/works/business-card.mp4',       'href' => '/businesscard.php'],
+    ['title' => 'Application Development', 'video' => 'assets/videos/works/app-development.mp4',     'href' => '/appdevelopment.php'],
+    ['title' => 'Latter Head',             'video' => 'assets/videos/works/latter-head.mp4',         'href' => '/latterhead.php'],
+    ['title' => 'Website Development',     'video' => 'assets/videos/works/website-development.mp4', 'href' => '/Websitedev.php'],
+    ['title' => 'Brochure Design',         'video' => 'assets/videos/works/brochure.mp4',            'href' => '/brochure.php'],
+    ['title' => 'Social Media Post',       'video' => 'assets/videos/works/social-media-post.mp4',   'href' => '/socialmediapost.php'],
+    ['title' => 'Logo Design',             'video' => 'assets/videos/works/logo.mp4',                'href' => '/logo.php'],
 ];
 ?>
 
@@ -78,6 +81,7 @@ $works = [
     <!-- Works Grid -->
     <section
         id="works-list"
+        data-play="<?= e($cardPlay) ?>"
         class="container mx-auto px-4 py-16 sm:px-6 sm:py-20 lg:px-8"
     >
 
@@ -89,15 +93,15 @@ $works = [
                     class="group relative block overflow-hidden rounded-xl border-2 border-blue-200 bg-white shadow-sm transition-all duration-500 ease-out hover:-translate-y-2 hover:border-blue-500 hover:shadow-2xl"
                 >
 
-                    <!-- Image -->
-                    <div class="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100">
+                    <!-- Video (replaces the old image). #t=0.1 shows a first frame until it plays -->
+                    <div class="ow-card__media relative w-full overflow-hidden bg-gradient-to-br from-blue-900 to-blue-950">
 
-                        <img
-                            src="<?= e($w['image']) ?>"
-                            alt="<?= e($w['title']) ?>"
-                            loading="lazy"
-                            class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                        />
+                        <video
+                            class="ow-card__video transition-transform duration-700 ease-out group-hover:scale-110"
+                            src="<?= e(base_url($w['video'])) ?>#t=0.1"
+                            muted loop playsinline preload="metadata"
+                            aria-label="<?= e($w['title']) ?>"
+                        ></video>
 
                         <!-- Dark Overlay -->
                         <div
@@ -203,4 +207,40 @@ $works = [
   .ow-hero__text { font-size: 1rem; }
   .ow-br { display: none; }
 }
+
+/* ---- card videos ---- */
+/* The box is ALWAYS 4:3. The video is laid over it (absolute) and cropped to fit, so a big or small video can never change the card size.
+   Want a different box shape? change 4 / 3 (e.g. 16 / 9 wider, 1 / 1 square). */
+.ow-card__media { aspect-ratio: 4 / 3; position: relative; overflow: hidden; }
+.ow-card__video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center; background: #14264A; }
 </style>
+
+<script>
+/* Card videos: 'auto' = play while visible, 'hover' = play on pointing. A missing file just leaves the dark blue box. */
+(function () {
+  var wrap = document.getElementById('works-list');
+  if (!wrap) return;
+  var vids = [].slice.call(wrap.querySelectorAll('.ow-card__video'));
+  if (!vids.length) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;   // first frame only
+
+  function play(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  var mode = wrap.getAttribute('data-play') || 'auto';
+  var canHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+
+  if (mode === 'hover' && canHover) {
+    vids.forEach(function (v) {
+      var card = v.closest('.group'); if (!card) return;
+      card.addEventListener('mouseenter', function () { play(v); });
+      card.addEventListener('mouseleave', function () { v.pause(); v.currentTime = 0.1; });
+    });
+  } else if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) play(en.target); else en.target.pause(); });
+    }, { threshold: 0.4 });
+    vids.forEach(function (v) { io.observe(v); });
+  } else {
+    vids.forEach(play);
+  }
+})();
+</script>

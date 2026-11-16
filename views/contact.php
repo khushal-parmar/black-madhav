@@ -83,21 +83,21 @@ $pinIcon = '<svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path str
 
           <label class="block">
             <span class="text-sm font-medium text-slate-700">Name</span>
-            <input name="name" type="text" required placeholder="Your name" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+            <input name="name" id="name" type="text" required placeholder="Your name" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
           </label>
           <label class="block">
             <span class="text-sm font-medium text-slate-700">Email</span>
-            <input name="email" type="email" required placeholder="Your email" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+            <input name="email" id="email" type="email" required placeholder="Your email" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
           </label>
           <label class="block">
             <span class="text-sm font-medium text-slate-700">Mobile Number</span>
-            <input name="phone" type="tel" required maxlength="10" placeholder="10 digit mobile number" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+            <input name="phone" id="sub" type="tel" required maxlength="10" placeholder="10 digit mobile number" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
           </label>
           <label class="block">
             <span class="text-sm font-medium text-slate-700">Project Details</span>
-            <textarea name="projectDetails" rows="5" required placeholder="Tell us about your project" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"></textarea>
+            <textarea name="projectDetails" id="msg" rows="5" required placeholder="Tell us about your project" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"></textarea>
           </label>
-          <button type="submit" class="inline-flex w-full items-center justify-center rounded-2xl bg-blue-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-800">
+          <button type="submit" onclick="gotowhatsapp()" class="inline-flex w-full items-center justify-center rounded-2xl bg-blue-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-800">
             Send Message
           </button>
         </form>
@@ -125,3 +125,21 @@ $pinIcon = '<svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path str
 #contact-page .cp-address h3 { font-weight: 700; color: #14264A; margin-bottom: .2rem; }
 #contact-page .cp-address p { font-size: .925rem; line-height: 1.55; color: #4066A3; }
 </style>
+ 
+<script>
+		function gotowhatsapp() {
+
+            var name = document.getElementById("name").value;
+			var email = document.getElementById("email").value;
+			var sub = document.getElementById("sub").value;
+			var msg = document.getElementById("msg").value;
+
+			var url = "https://wa.me/+918128730715?text=" 
+            + "Name: " + name + "%0a"
+			+ "Email: " + email + "%0a"
+			+ "Mobile: " + sub + "%0a"
+			+ "Message: " + msg;
+
+			window.open(url).focus();
+		}
+	</script>

@@ -52,6 +52,8 @@ $services = [
     [
         'icon' => 'web',
         'image' => 'web-development.jpg',
+        'fit'   => true,          // true = show the WHOLE picture (no cropping). Remove this line to fill the card instead.
+        'bg'    => '#F4F5F6',     // colour around the picture (match the picture's own background)
         'short' => "Fast, responsive websites that turn visitors into customers.",
         'title' => "Web Development",
         'description' => "Professional, fast, and responsive websites designed to convert visitors into customers.",
@@ -222,23 +224,6 @@ $processSteps = [
     ['icon' => 'startups', 'title' => "Step 6 – Deployment", 'description' => "We launch your project on a live server with complete optimization."],
     ['icon' => 'headset', 'title' => "Step 7 – Support & Maintenance", 'description' => "We provide ongoing support, updates, and improvements for long-term success."],
 ];
-
-/*
- * Industries: images are loaded from  assets/images/industries/<file>
- * Put your photos in that folder (recommended size 800x500, .jpg).
- * If an image is missing, a navy gradient is shown instead (no broken image).
- */
-$industries = [
-    ['title' => "E-commerce",           'image' => 'ecommerce.jpg',  'description' => "Helping businesses build online stores and digital marketplaces."],
-    ['title' => "Healthcare",           'image' => 'healthcare.jpg', 'description' => "Developing secure and reliable healthcare systems and applications."],
-    ['title' => "Education",            'image' => 'education.jpg',  'description' => "Creating e-learning platforms, institute websites, and training systems."],
-    ['title' => "Corporate & Business", 'image' => 'corporate.jpg',  'description' => "Professional solutions for companies, startups, and enterprises."],
-    ['title' => "Hospitality",          'image' => 'hospitality.jpg','description' => "Websites and booking systems for hotels, restaurants, and travel businesses."],
-    ['title' => "Real Estate",          'image' => 'realestate.jpg', 'description' => "Property listing platforms and real estate management systems."],
-    ['title' => "Automotive",           'image' => 'automotive.jpg', 'description' => "Digital solutions for vehicle services, dealerships, and platforms."],
-    ['title' => "Finance & Consulting", 'image' => 'finance.jpg',    'description' => "Secure and professional systems for financial and consulting services."],
-    ['title' => "Startups",             'image' => 'startups.jpg',   'description' => "Complete digital support to launch and scale new business ideas."],
-];
 ?>
 
 <div id="top" class="flex min-h-screen flex-col overflow-x-hidden bg-white text-slate-800" data-testid="page-home">
@@ -308,7 +293,20 @@ $industries = [
 
       <div class="sv-grid">
         <?php foreach ($services as $i => $service): ?>
-          <article class="sv-card">
+          <article class="sv-card<?= !empty($service['fit']) ? ' sv-card--fit' : '' ?>" tabindex="0"<?= !empty($service['bg']) ? ' style="--sv-bg: ' . e($service['bg']) . '"' : '' ?>>
+
+            <!-- details: waiting under the picture, revealed when the picture slides up -->
+            <div class="sv-card__details">
+              <?php if ($showServiceText): ?>
+                <p class="sv-card__desc"><?= e($service['description']) ?></p>
+              <?php endif; ?>
+              <a href="<?= base_url('/contact') ?>" class="sv-card__link">
+                Get a Quote
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </a>
+            </div>
+
+            <!-- picture: covers the whole card, slides UP on hover -->
             <div class="sv-card__media">
               <span class="sv-card__fallback"><?= bm_icon($service['icon']) ?></span>
               <img
@@ -316,18 +314,12 @@ $industries = [
                 alt="<?= e($service['title']) ?>"
                 loading="lazy"
                 onerror="this.style.display='none'" />
-              <span class="sv-card__icon"><?= bm_icon($service['icon']) ?></span>
+              <div class="sv-card__label">
+                <span class="sv-card__icon"><?= bm_icon($service['icon']) ?></span>
+                <h3 class="sv-card__title"><?= e($service['title']) ?></h3>
+              </div>
             </div>
-            <div class="sv-card__body">
-              <h3 class="sv-card__title"><?= e($service['title']) ?></h3>
-              <?php if ($showServiceText): ?>
-                <p class="sv-card__desc"><?= e($service['short']) ?></p>
-              <?php endif; ?>
-              <a href="<?= base_url('/contact') ?>" class="sv-card__link">
-                Get a Quote
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </a>
-            </div>
+
           </article>
         <?php endforeach; ?>
       </div>
@@ -337,7 +329,7 @@ $industries = [
   <!-- Why Choose Us Section -->
   <section id="why" class="sec sec--why py-24 md:py-32">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid gap-16 lg:grid-cols-[0.95fr_1.05fr] items-center">
+      <div class="why-grid grid gap-16 lg:grid-cols-[0.95fr_1.05fr]">
         <div>
           <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-blue-600">
             Why Choose Us
@@ -452,9 +444,15 @@ $industries = [
   <!-- Office Locations Component -->
   <?php
   // Office locations (same data as components/OfficeLocations.php) - rendered here so the section is styled by this file
+  //
+  // EACH office has its OWN picture. Put the two photos in  assets/images/locations/
+  //   (C:\xampp\htdocs\php\new\assets\images\locations\)  with exactly these names:
+  //   jamnagar.jpg  and  junagadh.jpg   (landscape photo, about 1200x750, under 300 KB)
+  // If a file is missing, the old shared picture  assets/images/loc.jpg  is shown instead.
+  $locFallback = base_url('assets/images/loc.jpg');
   $officeLocations = [
-      ['city' => 'Jamnagar',  'phone' => '+91 8128730715', 'mapUrl' => 'https://www.google.com/maps/search/?api=1&query=MDIDM+Infoway+Jamnagar',  'imageSrc' => base_url('assets/images/loc.jpg')],
-      ['city' => 'Junagadh', 'phone' => '+91 8128730715', 'mapUrl' => 'https://www.google.com/maps/search/?api=1&query=MDIDM+Infoway+Junagadh', 'imageSrc' => base_url('assets/images/loc.jpg')],
+      ['city' => 'Jamnagar',  'phone' => '+91 8128730715', 'mapUrl' => 'https://www.google.com/maps/search/?api=1&query=MDIDM+Infoway+Jamnagar',  'imageSrc' => base_url('assets/images/locations/jamnagar.jpg')],
+      ['city' => 'Junagadh', 'phone' => '+91 8128730715', 'mapUrl' => 'https://www.google.com/maps/search/?api=1&query=MDIDM+Infoway+Junagadh', 'imageSrc' => base_url('assets/images/locations/junagadh.jpg')],
   ];
   ?>
   <section id="locations" class="sec sec--locations py-24 md:py-32">
@@ -479,7 +477,8 @@ $industries = [
               </div>
             </div>
             <div class="branch-card__media">
-              <img src="<?= e($loc['imageSrc']) ?>" alt="<?= e($loc['city']) ?> office building" loading="lazy" />
+              <img src="<?= e($loc['imageSrc']) ?>" alt="<?= e($loc['city']) ?> office building" loading="lazy"
+                   onerror="this.onerror=null; this.src='<?= e($locFallback) ?>';" />
             </div>
             <div class="branch-card__foot">
               <span class="branch-card__phone">
@@ -599,45 +598,6 @@ $industries = [
             </button>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Industries Section -->
-  <section id="industries" class="sec sec--industries py-24 md:py-32">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto mb-14 max-w-3xl text-center">
-        <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-blue-600">
-          Industries We Serve
-        </p>
-        <h2 class="text-3xl font-bold tracking-tight text-blue-950 md:text-5xl">
-          Industries We Serve
-        </h2>
-        <p class="mt-4 text-lg leading-relaxed text-slate-600">
-          We deliver customized digital solutions for businesses across various industries.
-        </p>
-      </div>
-
-      <div class="ind-grid">
-        <?php foreach ($industries as $i => $ind): ?>
-          <article class="ind-card">
-            <div class="ind-card__media">
-              <img
-                src="<?= e(base_url('assets/images/industries/' . $ind['image'])) ?>"
-                alt="<?= e($ind['title']) ?> industry"
-                loading="lazy"
-                onerror="this.style.display='none'" />
-            </div>
-            <div class="ind-card__body">
-              <h3 class="ind-card__title"><?= e($ind['title']) ?></h3>
-              <p class="ind-card__desc"><?= e($ind['description']) ?></p>
-              <a href="<?= base_url('/contact') ?>" class="ind-card__link">
-                Explore Solutions
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </a>
-            </div>
-          </article>
-        <?php endforeach; ?>
       </div>
     </div>
   </section>
@@ -900,33 +860,34 @@ $industries = [
 @keyframes bmShimmer { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
 
 /* ==========================================================================
-   SECTION BACKGROUNDS - every section has its own LIGHT colour.
+   SECTION BACKGROUNDS - every section has its own LIGHT colour (all from the Light Navy Blue + White theme).
    Change any value below to recolour that section (keep them light).
    ========================================================================== */
 #top {
-  --bg-about:        #E8F0FB;   /* light blue      */
-  --bg-services:     #FFFFFF;   /* white           */
-  --bg-why:          #E6F4F8;   /* light sky       */
-  --bg-portfolio:    #FFFFFF;   /* white           */
-  --bg-testimonials: #EEEEFA;   /* light lavender  */
-  --bg-locations:    #FFFFFF;   /* white           */
-  --bg-stats:        #E7F5EE;   /* light mint      */
-  --bg-process:      #FFFFFF;   /* white           */
-  --bg-industries:   #FDF3E4;   /* light cream     */
-  --bg-quote:        #FFFFFF;   /* white           */
-  --bg-cta:          #DCE8F8;   /* soft light blue */
-  --bg-contact:      #F4F7FC;   /* very light blue */
+  --bg-about:        #EAF0FA;   /* light navy tint  */
+  --bg-services:     #FFFFFF;   /* white            */
+  --bg-why:          #F2F6FC;   /* very light navy  */
+  --bg-portfolio:    #FFFFFF;   /* white            */
+  --bg-testimonials: #E6EDF8;   /* light navy       */
+  --bg-locations:    #FFFFFF;   /* white            */
+  --bg-stats:        #DCE6F5;   /* soft navy tint   */
+  --bg-process:      #FFFFFF;   /* white            */
+  --bg-quote:        #FFFFFF;   /* white            */
+  --bg-cta:          #D3DEF0;   /* navy-200         */
+  --bg-contact:      #EEF3FA;   /* light navy       */
 }
 #top .sec { background-image: none !important; }
 #top .sec--about        { background-color: var(--bg-about) !important; }
 #top .sec--services     { background-color: var(--bg-services) !important; }
 #top .sec--why          { background-color: var(--bg-why) !important; }
+/* Why Choose Us: the heading + text start at the TOP, in line with the first box (not centred in the middle).
+   Want it a little lower? give .why-grid > div:first-child a padding-top, e.g. padding-top: 1rem. */
+#top .why-grid { align-items: start; }
 #top .sec--portfolio    { background-color: var(--bg-portfolio) !important; }
 #top .sec--testimonials { background-color: var(--bg-testimonials) !important; }
 #top .sec--locations    { background-color: var(--bg-locations) !important; }
 #top .sec--stats        { background-color: var(--bg-stats) !important; }
 #top .sec--process      { background-color: var(--bg-process) !important; }
-#top .sec--industries   { background-color: var(--bg-industries) !important; }
 #top .sec--quote        { background-color: var(--bg-quote) !important; }
 #top .sec--cta          { background-color: var(--bg-cta) !important; }
 #top .sec--contact      { background-color: var(--bg-contact) !important; }
@@ -989,35 +950,61 @@ $industries = [
 @media (min-width: 1024px) { #top .sv-grid { grid-template-columns: repeat(4, minmax(0,1fr)); } }
 
 #top .sv-card {
-  display: flex; flex-direction: column; overflow: hidden;
-  background: #fff; border: 1px solid var(--navy-100); border-radius: 1.25rem; box-shadow: var(--shadow-soft);
+  position: relative; overflow: hidden; border-radius: 1.5rem; outline: none;
+  aspect-ratio: 3 / 4;                                   /* card shape: change 3 / 4 (e.g. 4 / 5 = a bit shorter, 1 / 1 = square) */
+  background: linear-gradient(180deg, var(--navy-50), #fff); border: 1px solid var(--navy-100); box-shadow: var(--shadow-soft);
   transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out), border-color .3s ease;
 }
-#top .sv-card:hover { transform: translateY(-8px); border-color: var(--navy-300); box-shadow: var(--shadow-lift); }
+#top .sv-card:hover, #top .sv-card:focus-within { transform: translateY(-6px); border-color: var(--navy-300); box-shadow: var(--shadow-lift); }
 
-#top .sv-card__media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: linear-gradient(135deg, var(--navy-700), var(--navy-950)); }
-#top .sv-card__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .9s var(--ease-out); }
-#top .sv-card__media::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(20,38,74,.5) 0%, rgba(20,38,74,0) 55%); }
-#top .sv-card:hover .sv-card__media img { transform: scale(1.08); }
+/* PICTURE: whole picture is visible; on hover it slides UP (change 55% to move it more / less) */
+#top .sv-card__media {
+  position: absolute; inset: 0; z-index: 2; overflow: hidden;
+  background: linear-gradient(135deg, var(--navy-700), var(--navy-950));
+  border-radius: 0 0 1.25rem 1.25rem; box-shadow: 0 14px 30px -16px rgba(20,38,74,.55);
+  transition: transform .7s var(--ease-out);
+}
+#top .sv-card:hover .sv-card__media, #top .sv-card:focus-within .sv-card__media { transform: translateY(-55%); }
+#top .sv-card__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+/* 'fit' cards (see 'fit' => true in $services): the WHOLE picture is shown, never cropped */
+#top .sv-card--fit .sv-card__media { background: var(--sv-bg, #F4F5F6); }
+#top .sv-card--fit .sv-card__media img { object-fit: contain; object-position: center 18%; }
+#top .sv-card--fit .sv-card__fallback { display: none; }
 #top .sv-card__fallback { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.55); }
 #top .sv-card__fallback .bm-ico { width: 4rem; height: 4rem; }
-#top .sv-card__icon {
-  position: absolute; z-index: 2; left: .9rem; bottom: .9rem; display: grid; place-items: center;
-  width: 2.8rem; height: 2.8rem; border-radius: .85rem; color: var(--navy-700);
-  background: rgba(255,255,255,.95); box-shadow: 0 8px 18px -8px rgba(20,38,74,.6);
-  transition: background .35s, color .35s, transform .45s var(--ease-out);
-}
-#top .sv-card__icon .bm-ico { width: 1.5rem; height: 1.5rem; }
-#top .sv-card:hover .sv-card__icon { background: var(--navy-700); color: #fff; transform: translateY(-3px) rotate(-4deg); }
 
-#top .sv-card__body { display: flex; flex-direction: column; flex: 1 1 auto; padding: 1.2rem 1.3rem 1.3rem; }
-#top .sv-card__title { font-size: 1.15rem; font-weight: 700; color: var(--navy-950); transition: color .3s; }
-#top .sv-card:hover .sv-card__title { color: var(--navy-600); }
-#top .sv-card__desc { margin-top: .45rem; font-size: .9rem; line-height: 1.55; color: var(--navy-600); }
-#top .sv-card__link { display: inline-flex; align-items: center; gap: .4rem; align-self: flex-start; margin-top: auto; padding-top: 1rem; font-size: .85rem; font-weight: 600; color: var(--navy-700); }
+/* name sits on the bottom edge of the picture (moves up together with it) */
+#top .sv-card__label {
+  position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: .7rem;
+  padding: 2.6rem 1.1rem 1rem; background: linear-gradient(to top, rgba(20,38,74,.82) 0%, rgba(20,38,74,.45) 55%, rgba(20,38,74,0) 100%);
+}
+#top .sv-card__icon {
+  flex: 0 0 auto; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: .8rem;
+  color: #fff; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); backdrop-filter: blur(6px);
+}
+#top .sv-card__icon .bm-ico { width: 1.4rem; height: 1.4rem; }
+#top .sv-card__title { font-size: 1.1rem; font-weight: 700; line-height: 1.25; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.4); }
+
+/* DETAILS: sit in the lower part of the card, under the picture */
+#top .sv-card__details {
+  position: absolute; left: 0; right: 0; top: 45%; bottom: 0; z-index: 1;
+  display: flex; flex-direction: column; justify-content: center; gap: .85rem; padding: 1rem 1.35rem 1.2rem;
+}
+#top .sv-card__desc { font-size: .92rem; line-height: 1.6; color: var(--navy-600); }
+#top .sv-card__link { display: inline-flex; align-items: center; gap: .4rem; align-self: flex-start; font-size: .88rem; font-weight: 700; color: var(--navy-700); }
 #top .sv-card__link svg { width: 1rem; height: 1rem; transition: transform .35s var(--ease-out); }
 #top .sv-card__link:hover { color: var(--navy-950); }
 #top .sv-card__link:hover svg { transform: translateX(4px); }
+
+/* phones / touch screens have no hover: picture on top, details always shown below it */
+@media (hover: none), (max-width: 767px) {
+  #top .sv-card { aspect-ratio: auto; display: flex; flex-direction: column; }
+  #top .sv-card:hover, #top .sv-card:focus-within { transform: none; }
+  #top .sv-card__media { position: relative; inset: auto; order: 1; aspect-ratio: 16 / 10; flex: 0 0 auto; border-radius: 0; box-shadow: none; }
+  #top .sv-card:hover .sv-card__media, #top .sv-card:focus-within .sv-card__media { transform: none; }
+  #top .sv-card--fit .sv-card__media { aspect-ratio: 1 / 1; }
+  #top .sv-card__details { position: static; order: 2; justify-content: flex-start; padding: 1rem 1.15rem 1.2rem; }
+}
 
 /* ==========================================================================
    SERVICES CARDS  (.svc-*)  - icon + name on top, description below
@@ -1072,47 +1059,6 @@ $industries = [
 #top .svc-card__link svg { width: 1rem; height: 1rem; transition: transform .35s var(--ease-out); }
 #top .svc-card__link:hover { color: var(--navy-950); }
 #top .svc-card__link:hover svg { transform: translateX(4px); }
-
-/* ==========================================================================
-   INDUSTRY CARDS  (.ind-*)  - image on top, information below
-   ========================================================================== */
-#top .ind-grid { display: grid; gap: 1.75rem; grid-template-columns: minmax(0,1fr); }
-@media (min-width: 768px)  { #top .ind-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
-@media (min-width: 1024px) { #top .ind-grid { grid-template-columns: repeat(3, minmax(0,1fr)); } }
-
-#top .ind-card {
-  display: flex; flex-direction: column; overflow: hidden;
-  background: #fff; border: 1px solid var(--navy-100); border-radius: 1.25rem;
-  box-shadow: var(--shadow-soft);
-  transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out), border-color .3s ease;
-}
-#top .ind-card:hover { transform: translateY(-8px); border-color: var(--navy-300); box-shadow: var(--shadow-lift); }
-
-#top .ind-card__media {
-  position: relative; aspect-ratio: 16 / 10; overflow: hidden;
-  background: linear-gradient(135deg, var(--navy-700), var(--navy-950));   /* fallback if image missing */
-}
-#top .ind-card__media img {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform .9s var(--ease-out);
-}
-#top .ind-card__media::after {        /* soft navy fade at the bottom of the image */
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(to top, rgba(20,38,74,.55) 0%, rgba(20,38,74,0) 55%);
-}
-#top .ind-card:hover .ind-card__media img { transform: scale(1.08); }
-#top .ind-card__body { display: flex; flex-direction: column; flex: 1 1 auto; padding: 1.4rem 1.5rem 1.5rem; }
-#top .ind-card__title { font-size: 1.25rem; font-weight: 700; color: var(--navy-950); margin-bottom: .55rem; transition: color .3s; }
-#top .ind-card:hover .ind-card__title { color: var(--navy-600); }
-#top .ind-card__desc { flex: 1 1 auto; font-size: .93rem; line-height: 1.65; color: var(--navy-600); }
-#top .ind-card__link {
-  display: inline-flex; align-items: center; gap: .45rem; align-self: flex-start;
-  margin-top: 1.15rem; font-size: .875rem; font-weight: 600; color: var(--navy-700);
-}
-#top .ind-card__link svg { width: 1rem; height: 1rem; transition: transform .35s var(--ease-out); }
-#top .ind-card__link:hover { color: var(--navy-950); }
-#top .ind-card__link:hover svg { transform: translateX(5px); }
-
 
 /* ---- process: 7 steps on one circle (step 1 -> step 7) ---- */
 #top .orbit-wrap { display: grid; gap: 3rem; align-items: center; grid-template-columns: minmax(0,1fr); }
@@ -1219,13 +1165,13 @@ $industries = [
 #top .contact-line:hover .contact-line__icon { background: var(--navy-700); color: #fff; transform: scale(1.1); }
 
 @media (max-width: 767px) {
-  #top .branch-card:hover, #top .svc-card:hover, #top .sv-card:hover, #top .ind-card:hover { transform: none; }
+  #top .branch-card:hover, #top .svc-card:hover, #top .sv-card:hover { transform: none; }
   #top .branch-card__foot { flex-direction: column; align-items: stretch; }
   #top .branch-card .bm-btn { width: 100%; }
   #top input, #top select, #top textarea { font-size: 16px !important; }
   #top .anim-left.in-view, #top .anim-right.in-view { animation-name: bmUp; }
 }
-@media (hover: none) { #top .group:hover img, #top .ind-card:hover img, #top .sv-card:hover img { transform: none; } }
+@media (hover: none) { #top .group:hover img { transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   #top *, #top *::before, #top *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   .js-anim #top .anim:not(.in-view) { opacity: 1; }
@@ -1252,13 +1198,9 @@ $industries = [
   #top #stats .grid > * { padding: 1.1rem .75rem; }
   #top #stats .stat-counter { font-size: 1.9rem; }
 
-  /* industries: shorter pictures */
-  #top .ind-card__media, #top .sv-card__media { aspect-ratio: 16 / 9; }
-  #top .ind-card__body { padding: 1.1rem 1.2rem 1.25rem; }
 
   /* service cards a little tighter */
   #top .svc-card { padding: 1.25rem 1.25rem 1rem; }
-  #top .sv-card__body { padding: 1rem 1.15rem 1.15rem; }
 
   /* process circle: fits narrow phones */
   #top .orbit-wrap { gap: 2rem; }
@@ -1309,7 +1251,6 @@ $industries = [
   });
   tag(list('.svc-card'), 'anim-up', 0.07);
   tag(list('.sv-card'), 'anim-up', 0.07);
-  tag(list('.ind-card'), 'anim-up', 0.07);
   tag(list('.branch-card'), 'anim-up', 0.12);
   tag(list('#stats .grid > *'), 'anim-zoom', 0.08);
 
@@ -1334,6 +1275,7 @@ $industries = [
 /* Process circle: click a step, use the arrows, or let it play 1 -> 7 */
 (function () {
   var wrap = document.querySelector('[data-orbit]');
+  // this is a use for a progrmaing laungage sue for a php progrmaing laungage 
   if (!wrap) return;
   var nodes  = [].slice.call(wrap.querySelectorAll('.orbit__node'));
   var panels = [].slice.call(wrap.querySelectorAll('.orbit__panel'));
@@ -1343,7 +1285,6 @@ $industries = [
   var cnum = wrap.querySelector('[data-center-num]');
   var n = nodes.length, idx = 0, timer = null;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
   function set(i) {
     idx = (i + n) % n;
     nodes.forEach(function (el, k) {
